@@ -19,14 +19,14 @@ COPY package.json pnpm-lock.yaml ./
 # Install production dependencies only
 RUN pnpm install --frozen-lockfile --prod=false
 
+# Rebuild better-sqlite3 for the container's architecture (use npm directly in the package folder)
+RUN cd node_modules/.pnpm/better-sqlite3@11.10.0/node_modules/better-sqlite3 && npm run build-release
+
 # Copy application files
 COPY . .
 
 # Build the application
 RUN pnpm run build
-
-# Remove dev dependencies
-RUN pnpm prune --prod
 
 # Expose port
 EXPOSE 3000

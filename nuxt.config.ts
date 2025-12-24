@@ -43,6 +43,10 @@ export default defineNuxtConfig({
     nitro: {
         experimental: {
             websocket: true
+        },
+        moduleSideEffects: ['better-sqlite3'],
+        rollupConfig: {
+            external: ['better-sqlite3']
         }
     },
 
