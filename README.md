@@ -1,10 +1,10 @@
-# Monocle - Online Logging Application
+# Payload - Log Server
 
-A beautiful, real-time logging application that allows you to send logs from any application to a remote server for storage and analysis.
+A beautiful, real-time logging server that allows you to send logs from any application to a remote server for storage and analysis.
 
 ## Features
 
-- 🎨 Beautiful dark-themed UI based on the Monocle design
+- 🎨 Beautiful dark-themed UI with elegant design
 - 📊 Real-time log monitoring with auto-refresh
 - 🔍 Advanced filtering by log level, date range, and keywords
 - 🔐 Secure access via API keys or IP whitelist

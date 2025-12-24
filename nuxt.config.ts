@@ -3,6 +3,23 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
     devtools: { enabled: true },
     
+    app: {
+        head: {
+            title: 'Payload - Log Server',
+            htmlAttrs: {
+                lang: 'en'
+            },
+            meta: [
+                { charset: 'utf-8' },
+                { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+                { name: 'description', content: 'Payload - Simple and elegant log aggregation server' }
+            ],
+            link: [
+                { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
+            ]
+        }
+    },
+    
     modules: [
         '@nuxt/fonts',
         '@vueuse/nuxt',

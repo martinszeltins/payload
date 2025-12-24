@@ -1,5 +1,5 @@
 {
-  "name": "monocle-logs",
+  "name": "payload-logs",
   "type": "module",
   "private": true,
   "scripts": {

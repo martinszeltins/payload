@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
     useSeoMeta({
-        title: 'Monocle - Log Observability',
-        description: 'Remote logging application for monitoring and analyzing logs'
+        title: 'Payload - Log Server',
+        description: 'Simple and elegant log aggregation server for remote monitoring'
     })
 </script>
