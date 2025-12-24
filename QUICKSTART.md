@@ -1,6 +1,51 @@
 # Quick Start Guide
 
-## 🚀 Running the Application
+## � Using Docker (Recommended)
+
+Everything is containerized! No need to install Node.js or dependencies on your host machine.
+
+### First Time Setup
+
+```bash
+# 1. Start the container
+docker compose up -d --build
+
+# 2. Rebuild native modules (required for better-sqlite3)
+docker exec payload-app pnpm rebuild better-sqlite3
+
+# 3. Verify everything works
+./verify-docker.sh
+
+# 4. Start development server
+./payload.sh dev
+```
+
+The app will be available at http://localhost:8911
+
+### Daily Development
+
+```bash
+# Start dev server
+./payload.sh dev
+
+# Run tests
+./payload.sh test
+
+# Check for errors (typecheck + lint + tests)
+./payload.sh check
+
+# Access container shell
+./payload.sh shell
+
+# View logs
+./payload.sh logs
+```
+
+See `DOCKER.md` for comprehensive Docker documentation.
+
+## 💻 Running Without Docker (Alternative)
+
+If you prefer to run directly on your host machine:
 
 ### Development Mode
 ```bash
@@ -8,7 +53,7 @@ pnpm install
 pnpm dev
 ```
 
-The application will be available at http://localhost:3000
+The application will be available at http://localhost:8911
 
 ### Production Mode with Docker
 ```bash
@@ -18,7 +63,7 @@ docker-compose up -d
 ## 📝 First Steps
 
 1. **Access the Dashboard**
-   - Open http://localhost:3000 in your browser
+   - Open http://localhost:8911 in your browser
    - You'll see the log dashboard
 
 2. **Create an API Key**
@@ -29,7 +74,7 @@ docker-compose up -d
 
 3. **Send Your First Log**
    ```bash
-   curl -X POST http://localhost:3000/api/log \
+   curl -X POST http://localhost:8911/api/log \
      -H "Content-Type: application/json" \
      -H "X-API-Key: YOUR_API_KEY_HERE" \
      -d '{
@@ -135,13 +180,13 @@ app/
 Test log creation:
 ```bash
 # INFO log
-curl -X POST http://localhost:3000/api/log \
+curl -X POST http://localhost:8911/api/log \
   -H "Content-Type: application/json" \
   -H "X-API-Key: YOUR_KEY" \
   -d '{"message": "Test INFO log", "level": "INFO"}'
 
 # ERROR log with metadata
-curl -X POST http://localhost:3000/api/log \
+curl -X POST http://localhost:8911/api/log \
   -H "Content-Type: application/json" \
   -H "X-API-Key: YOUR_KEY" \
   -d '{
@@ -151,7 +196,7 @@ curl -X POST http://localhost:3000/api/log \
   }'
 
 # JSON message
-curl -X POST http://localhost:3000/api/log \
+curl -X POST http://localhost:8911/api/log \
   -H "Content-Type: application/json" \
   -H "X-API-Key: YOUR_KEY" \
   -d '{

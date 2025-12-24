@@ -69,6 +69,22 @@ function initDatabase() {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     `)
+
+    // Add default whitelisted IPs for local development
+    const defaultIps = [
+        { ip: '127.0.0.1', desc: 'Localhost (IPv4)' },
+        { ip: '::1', desc: 'Localhost (IPv6)' },
+        { ip: '::ffff:127.0.0.1', desc: 'Localhost (IPv4-mapped IPv6)' },
+        { ip: '172.19.0.1', desc: 'Docker gateway (IPv4)' },
+        { ip: '::ffff:172.19.0.1', desc: 'Docker gateway (IPv6)' },
+        { ip: '172.17.0.1', desc: 'Docker default gateway (IPv4)' },
+        { ip: '::ffff:172.17.0.1', desc: 'Docker default gateway (IPv6)' }
+    ]
+
+    const insertDefaultIp = db.prepare('INSERT OR IGNORE INTO ip_whitelist (ip_address, description) VALUES (?, ?)')
+    for (const { ip, desc } of defaultIps) {
+        insertDefaultIp.run(ip, desc)
+    }
 }
 
 // Log operations

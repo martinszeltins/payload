@@ -1,0 +1,42 @@
+FROM node:20-alpine
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Install required system dependencies for better-sqlite3
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    wget
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+
+# Install production dependencies only
+RUN pnpm install --frozen-lockfile --prod=false
+
+# Copy application files
+COPY . .
+
+# Build the application
+RUN pnpm run build
+
+# Remove dev dependencies
+RUN pnpm prune --prod
+
+# Expose port
+EXPOSE 3000
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV DATABASE_PATH=/app/data/logs.db
+
+# Create data directory
+RUN mkdir -p /app/data
+
+# Start the application
+CMD ["node", ".output/server/index.mjs"]

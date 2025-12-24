@@ -80,7 +80,7 @@ These tests work locally but may fail in CI due to timing variations. They can b
 
 Tests are configured in `playwright.config.ts`:
 
-- **Base URL**: http://localhost:3000
+- **Base URL**: http://localhost:8911
 - **Test directory**: ./tests/e2e
 - **Browser**: Chromium (can be extended to Firefox and Webkit)
 - **Reporter**: HTML reporter (generates detailed test reports)
