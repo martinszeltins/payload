@@ -7,12 +7,12 @@
                     <h2 class="text-xl font-semibold">IP Whitelist</h2>
                     <p class="text-sm text-gray-400">Manage IP addresses allowed to send logs without API keys</p>
                 </div>
-                <button
+                <AppButton
+                    variant="icon"
                     @click="$emit('close')"
-                    class="p-2 rounded-lg hover:bg-base border border-transparent hover:border-stroke"
                 >
-                    ✕
-                </button>
+                    <X :size="18" />
+                </AppButton>
             </div>
 
             <!-- Content -->
@@ -25,22 +25,23 @@
                             v-model="newIp"
                             type="text"
                             placeholder="IP address (e.g., 192.168.1.1)"
-                            class="w-full px-4 py-2 rounded-lg bg-panel border border-stroke text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-purple"
+                            class="w-full px-4 py-2 rounded-lg bg-panel border border-stroke text-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400"
                         >
                         <input
                             v-model="newDescription"
                             type="text"
                             placeholder="Description (optional)"
-                            class="w-full px-4 py-2 rounded-lg bg-panel border border-stroke text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-purple"
+                            class="w-full px-4 py-2 rounded-lg bg-panel border border-stroke text-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400"
                             @keyup.enter="addIp"
                         >
-                        <button
+                        <AppButton
+                            variant="primary"
                             @click="addIp"
                             :disabled="!newIp || adding"
-                            class="w-full px-4 py-2 rounded-lg bg-brand-purple hover:bg-brand-purple/80 text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                            class="w-full"
                         >
                             Add IP Address
-                        </button>
+                        </AppButton>
                     </div>
                 </div>
 
@@ -66,12 +67,12 @@
                                 Added {{ formatDate(ip.created_at) }}
                             </p>
                         </div>
-                        <button
+                        <AppButton
+                            variant="danger"
                             @click="removeIp(ip.id!)"
-                            class="px-3 py-1.5 rounded-lg bg-brand-pink/20 hover:bg-brand-pink/30 text-brand-pink text-sm border border-brand-pink/30"
                         >
                             Remove
-                        </button>
+                        </AppButton>
                     </div>
                 </div>
             </div>

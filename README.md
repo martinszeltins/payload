@@ -59,7 +59,7 @@ pnpm dev
 ### Using cURL
 
 ```bash
-curl -X POST http://localhost:3000/ \
+curl -X POST http://localhost:3000/api/log \
   -H "Content-Type: application/json" \
   -H "X-API-Key: YOUR_API_KEY" \
   -d '{
@@ -72,7 +72,7 @@ curl -X POST http://localhost:3000/ \
 ### Using JavaScript
 
 ```javascript
-fetch('http://localhost:3000/', {
+fetch('http://localhost:3000/api/log', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',

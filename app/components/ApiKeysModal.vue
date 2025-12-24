@@ -7,12 +7,12 @@
                     <h2 class="text-xl font-semibold">API Keys</h2>
                     <p class="text-sm text-gray-400">Manage API keys for accessing the logging API</p>
                 </div>
-                <button
+                <AppButton
+                    variant="icon"
                     @click="$emit('close')"
-                    class="p-2 rounded-lg hover:bg-base border border-transparent hover:border-stroke"
                 >
-                    ✕
-                </button>
+                    <X :size="18" />
+                </AppButton>
             </div>
 
             <!-- Content -->
@@ -25,16 +25,16 @@
                             v-model="newKeyName"
                             type="text"
                             placeholder="Key name..."
-                            class="flex-1 px-4 py-2 rounded-lg bg-panel border border-stroke text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-purple"
+                            class="flex-1 px-4 py-2 rounded-lg bg-panel border border-stroke text-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400"
                             @keyup.enter="createApiKey"
                         >
-                        <button
+                        <AppButton
+                            variant="primary"
                             @click="createApiKey"
                             :disabled="!newKeyName || creating"
-                            class="px-4 py-2 rounded-lg bg-brand-purple hover:bg-brand-purple/80 text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Create
-                        </button>
+                        </AppButton>
                     </div>
                     <p v-if="newlyCreatedKey" class="mt-3 p-3 bg-brand-yellow/10 border border-brand-yellow/30 rounded-lg">
                         <span class="text-xs text-gray-400 block mb-1">New API Key (save it now, it won't be shown again):</span>
@@ -67,12 +67,12 @@
                                 Created {{ formatDate(key.created_at) }}
                             </p>
                         </div>
-                        <button
+                        <AppButton
+                            variant="danger"
                             @click="deleteKey(key.id!)"
-                            class="px-3 py-1.5 rounded-lg bg-brand-pink/20 hover:bg-brand-pink/30 text-brand-pink text-sm border border-brand-pink/30"
                         >
                             Delete
-                        </button>
+                        </AppButton>
                     </div>
                 </div>
             </div>

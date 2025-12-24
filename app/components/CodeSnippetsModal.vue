@@ -7,12 +7,12 @@
                     <h2 class="text-xl font-semibold">Code Snippets</h2>
                     <p class="text-sm text-gray-400">Copy these snippets to send logs from your applications</p>
                 </div>
-                <button
+                <AppButton
+                    variant="icon"
                     @click="$emit('close')"
-                    class="p-2 rounded-lg hover:bg-base border border-transparent hover:border-stroke"
                 >
-                    ✕
-                </button>
+                    <X :size="18" />
+                </AppButton>
             </div>
 
             <!-- Content -->
@@ -25,7 +25,7 @@
                         @click="selectedLanguage = lang"
                         class="px-4 py-2 text-sm font-medium transition-colors"
                         :class="selectedLanguage === lang
-                            ? 'text-brand-purple border-b-2 border-brand-purple'
+                            ? 'text-gray-200 border-b-2 border-gray-400'
                             : 'text-gray-400 hover:text-gray-300'"
                     >
                         {{ lang.toUpperCase() }}
@@ -37,12 +37,12 @@
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">Basic Example</h3>
-                            <button
+                            <AppButton
                                 @click="copySnippet(curlBasic)"
-                                class="px-3 py-1 rounded-lg bg-base border border-stroke text-xs hover:bg-panel2"
+                                class="text-xs"
                             >
                                 Copy
-                            </button>
+                            </AppButton>
                         </div>
                         <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ curlBasic }}</code></pre>
                     </div>
@@ -50,12 +50,12 @@
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">With API Key</h3>
-                            <button
+                            <AppButton
                                 @click="copySnippet(curlWithKey)"
-                                class="px-3 py-1 rounded-lg bg-base border border-stroke text-xs hover:bg-panel2"
+                                class="text-xs"
                             >
                                 Copy
-                            </button>
+                            </AppButton>
                         </div>
                         <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ curlWithKey }}</code></pre>
                     </div>
@@ -63,12 +63,12 @@
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">With Log Level and Metadata</h3>
-                            <button
+                            <AppButton
                                 @click="copySnippet(curlAdvanced)"
-                                class="px-3 py-1 rounded-lg bg-base border border-stroke text-xs hover:bg-panel2"
+                                class="text-xs"
                             >
                                 Copy
-                            </button>
+                            </AppButton>
                         </div>
                         <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ curlAdvanced }}</code></pre>
                     </div>
@@ -79,12 +79,12 @@
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">Fetch API</h3>
-                            <button
+                            <AppButton
                                 @click="copySnippet(jsFetch)"
-                                class="px-3 py-1 rounded-lg bg-base border border-stroke text-xs hover:bg-panel2"
+                                class="text-xs"
                             >
                                 Copy
-                            </button>
+                            </AppButton>
                         </div>
                         <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ jsFetch }}</code></pre>
                     </div>
@@ -92,12 +92,12 @@
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">Axios</h3>
-                            <button
+                            <AppButton
                                 @click="copySnippet(jsAxios)"
-                                class="px-3 py-1 rounded-lg bg-base border border-stroke text-xs hover:bg-panel2"
+                                class="text-xs"
                             >
                                 Copy
-                            </button>
+                            </AppButton>
                         </div>
                         <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ jsAxios }}</code></pre>
                     </div>
@@ -108,12 +108,12 @@
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">cURL</h3>
-                            <button
+                            <AppButton
                                 @click="copySnippet(phpCurl)"
-                                class="px-3 py-1 rounded-lg bg-base border border-stroke text-xs hover:bg-panel2"
+                                class="text-xs"
                             >
                                 Copy
-                            </button>
+                            </AppButton>
                         </div>
                         <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ phpCurl }}</code></pre>
                     </div>
@@ -121,12 +121,12 @@
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">file_get_contents</h3>
-                            <button
+                            <AppButton
                                 @click="copySnippet(phpFileGetContents)"
-                                class="px-3 py-1 rounded-lg bg-base border border-stroke text-xs hover:bg-panel2"
+                                class="text-xs"
                             >
                                 Copy
-                            </button>
+                            </AppButton>
                         </div>
                         <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ phpFileGetContents }}</code></pre>
                     </div>
@@ -137,12 +137,12 @@
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">Requests Library</h3>
-                            <button
+                            <AppButton
                                 @click="copySnippet(pythonRequests)"
-                                class="px-3 py-1 rounded-lg bg-base border border-stroke text-xs hover:bg-panel2"
+                                class="text-xs"
                             >
                                 Copy
-                            </button>
+                            </AppButton>
                         </div>
                         <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ pythonRequests }}</code></pre>
                     </div>
@@ -161,16 +161,16 @@
     const apiUrl = window.location.origin
 
     // cURL examples
-    const curlBasic = `curl -X POST ${apiUrl}/ \\
+    const curlBasic = `curl -X POST ${apiUrl}/api/log \\
   -H "Content-Type: application/json" \\
   -d '{"message": "Test log message"}'`
 
-    const curlWithKey = `curl -X POST ${apiUrl}/ \\
+    const curlWithKey = `curl -X POST ${apiUrl}/api/log \\
   -H "Content-Type: application/json" \\
   -H "X-API-Key: YOUR_API_KEY" \\
   -d '{"message": "Test log message"}'`
 
-    const curlAdvanced = `curl -X POST ${apiUrl}/ \\
+    const curlAdvanced = `curl -X POST ${apiUrl}/api/log \\
   -H "Content-Type: application/json" \\
   -H "X-API-Key: YOUR_API_KEY" \\
   -d '{
@@ -180,7 +180,7 @@
   }'`
 
     // JavaScript examples
-    const jsFetch = `fetch('${apiUrl}/', {
+    const jsFetch = `fetch('${apiUrl}/api/log', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
@@ -198,7 +198,7 @@
 
     const jsAxios = `import axios from 'axios'
 
-axios.post('${apiUrl}/', {
+axios.post('${apiUrl}/api/log', {
     message: 'Test log message',
     level: 'ERROR',
     metadata: JSON.stringify({ error_code: 500 })
@@ -212,7 +212,7 @@ axios.post('${apiUrl}/', {
 
     // PHP examples
     const phpCurl = `<?php
-$ch = curl_init('${apiUrl}/');
+$ch = curl_init('${apiUrl}/api/log');
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -248,7 +248,7 @@ $options = [
 ];
 
 $context = stream_context_create($options);
-$result = file_get_contents('${apiUrl}/', false, $context);
+$result = file_get_contents('${apiUrl}/api/log', false, $context);
 
 echo $result;
 ?>`
@@ -257,7 +257,7 @@ echo $result;
     const pythonRequests = `import requests
 import json
 
-url = '${apiUrl}/'
+url = '${apiUrl}/api/log'
 headers = {
     'Content-Type': 'application/json',
     'X-API-Key': 'YOUR_API_KEY'

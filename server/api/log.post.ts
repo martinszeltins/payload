@@ -1,6 +1,7 @@
 import { insertLog, isIpWhitelisted, verifyApiKey } from '../database/db'
 import { checkRateLimit } from '../utils/rateLimit'
 import { getClientIp, sanitizeInput } from '../utils/helpers'
+import { broadcastNewLog } from '../utils/websocket'
 
 export default defineEventHandler(async (event) => {
     // Handle CORS preflight
@@ -72,7 +73,11 @@ export default defineEventHandler(async (event) => {
 
     // Insert log into database
     try {
-        insertLog(log)
+        const insertedLog = insertLog(log)
+        
+        // Broadcast new log to all connected WebSocket clients
+        broadcastNewLog(insertedLog)
+        
         return {
             success: true,
             message: 'Log entry created successfully'

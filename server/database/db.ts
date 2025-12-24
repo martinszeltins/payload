@@ -78,7 +78,11 @@ export function insertLog(log: Log) {
         INSERT INTO logs (message, level, metadata, ip_address, timestamp)
         VALUES (?, ?, ?, ?, ?)
     `)
-    return stmt.run(log.message, log.level, log.metadata, log.ip_address, log.timestamp)
+    const result = stmt.run(log.message, log.level, log.metadata, log.ip_address, log.timestamp)
+    
+    // Return the inserted log with its ID
+    const insertedLog = db.prepare('SELECT * FROM logs WHERE id = ?').get(result.lastInsertRowid) as Log
+    return insertedLog
 }
 
 export function getLogs(options: {

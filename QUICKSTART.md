@@ -29,7 +29,7 @@ docker-compose up -d
 
 3. **Send Your First Log**
    ```bash
-   curl -X POST http://localhost:3000/ \
+   curl -X POST http://localhost:3000/api/log \
      -H "Content-Type: application/json" \
      -H "X-API-Key: YOUR_API_KEY_HERE" \
      -d '{
@@ -135,13 +135,13 @@ app/
 Test log creation:
 ```bash
 # INFO log
-curl -X POST http://localhost:3000/ \
+curl -X POST http://localhost:3000/api/log \
   -H "Content-Type: application/json" \
   -H "X-API-Key: YOUR_KEY" \
   -d '{"message": "Test INFO log", "level": "INFO"}'
 
 # ERROR log with metadata
-curl -X POST http://localhost:3000/ \
+curl -X POST http://localhost:3000/api/log \
   -H "Content-Type: application/json" \
   -H "X-API-Key: YOUR_KEY" \
   -d '{
@@ -151,7 +151,7 @@ curl -X POST http://localhost:3000/ \
   }'
 
 # JSON message
-curl -X POST http://localhost:3000/ \
+curl -X POST http://localhost:3000/api/log \
   -H "Content-Type: application/json" \
   -H "X-API-Key: YOUR_KEY" \
   -d '{
