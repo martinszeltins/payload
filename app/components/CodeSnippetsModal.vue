@@ -88,36 +88,10 @@
                         </div>
                         <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ jsFetch }}</code></pre>
                     </div>
-
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-sm font-semibold">Axios</h3>
-                            <AppButton
-                                class="text-xs"
-                                @click="copySnippet(jsAxios)"
-                            >
-                                Copy
-                            </AppButton>
-                        </div>
-                        <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ jsAxios }}</code></pre>
-                    </div>
                 </div>
 
                 <!-- PHP -->
                 <div v-if="selectedLanguage === 'php'" class="space-y-4">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-sm font-semibold">cURL</h3>
-                            <AppButton
-                                class="text-xs"
-                                @click="copySnippet(phpCurl)"
-                            >
-                                Copy
-                            </AppButton>
-                        </div>
-                        <pre class="bg-base border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code>{{ phpCurl }}</code></pre>
-                    </div>
-
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">file_get_contents</h3>
@@ -198,41 +172,7 @@
 .then(data => console.log('Log sent:', data))
 .catch(error => console.error('Error:', error))`
 
-    const jsAxios = `import axios from 'axios'
-
-axios.post('${apiUrl}/api/log', {
-    message: 'Test log message',
-    level: 'ERROR',
-    metadata: JSON.stringify({ error_code: 500 })
-}, {
-    headers: {
-        'X-API-Key': 'YOUR_API_KEY'
-    }
-})
-.then(response => console.log('Log sent:', response.data))
-.catch(error => console.error('Error:', error))`
-
     // PHP examples
-    const phpCurl = `<?php
-$ch = curl_init('${apiUrl}/api/log');
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    'Content-Type: application/json',
-    'X-API-Key: YOUR_API_KEY'
-]);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-    'message' => 'Test log message',
-    'level' => 'INFO',
-    'metadata' => json_encode(['user_id' => 123])
-]));
-
-$response = curl_exec($ch);
-curl_close($ch);
-
-echo $response;
-?>`
-
     const phpFileGetContents = `<?php
 file_get_contents('${apiUrl}/api/log', false, stream_context_create([
     'http' => [

@@ -159,7 +159,6 @@
                         <h2 class="text-lg font-semibold">{{ totalLogs }} Total Entries</h2>
                     </div>
                     <AppButton
-                        :disabled="totalLogs === 0 || clearing"
                         @click="clearAllLogs"
                     >
                         {{ clearing ? 'Clearing...' : 'Clear Logs' }}
@@ -472,10 +471,10 @@ file_get_contents('${baseUrl}/api/log', false, stream_context_create([
                                 filteredLogs.pop()
                             }
                             
-                            // Update the data
+                            // Update the data - increment total count
                             logsData.value = {
                                 logs: filteredLogs,
-                                total: logsData.value.total
+                                total: logsData.value.total + 1
                             }
                         }
                     }
