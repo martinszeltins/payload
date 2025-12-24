@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" @click.self="$emit('close')">
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" tabindex="-1" @click.self="$emit('close')" @keydown.esc="$emit('close')">
         <div class="bg-panel border border-stroke rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
             <!-- Header -->
             <div class="flex items-center justify-between p-6 border-b border-stroke">
@@ -153,7 +153,9 @@
 </template>
 
 <script setup lang="ts">
-    defineEmits(['close'])
+    const emit = defineEmits<{
+        close: []
+    }>()
 
     const selectedLanguage = ref('curl')
     const languages = ['curl', 'javascript', 'php', 'python']
@@ -272,4 +274,19 @@ print('Response:', response.json())`
             console.error('Failed to copy:', error)
         }
     }
+    
+    onMounted(() => {
+        // Handle ESC key
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                emit('close')
+            }
+        }
+        window.addEventListener('keydown', handleEscape)
+        
+        // Cleanup
+        onBeforeUnmount(() => {
+            window.removeEventListener('keydown', handleEscape)
+        })
+    })
 </script>

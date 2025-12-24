@@ -11,7 +11,10 @@
     "typecheck": "nuxi typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "check-errors": "pnpm run typecheck && pnpm run lint"
+    "check-errors": "pnpm run typecheck && pnpm run lint && pnpm run test",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed"
   },
   "dependencies": {
     "@nuxt/fonts": "0.12.1",
@@ -26,11 +29,13 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^0.7.6",
+    "@playwright/test": "1.57.0",
     "@types/better-sqlite3": "7.6.13",
     "@types/node": "25.0.3",
     "@typescript-eslint/parser": "8.50.1",
     "eslint": "^9.18.0",
     "lucide-vue-next": "0.562.0",
+    "playwright": "1.57.0",
     "vue-eslint-parser": "10.2.0"
   }
 }

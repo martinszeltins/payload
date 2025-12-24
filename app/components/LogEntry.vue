@@ -120,7 +120,7 @@
 </script>
 
 <template>
-    <div class="p-4 lg:p-6 hover:bg-white/5 transition-colors border-b border-stroke last:border-b-0">
+    <div data-testid="log-entry" class="p-4 lg:p-6 hover:bg-white/5 transition-colors border-b border-stroke last:border-b-0">
         <div class="flex items-start gap-4">
             <!-- Log Level Badge -->
             <div
