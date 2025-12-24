@@ -78,7 +78,10 @@ function initDatabase() {
         { ip: '172.19.0.1', desc: 'Docker gateway (IPv4)' },
         { ip: '::ffff:172.19.0.1', desc: 'Docker gateway (IPv6)' },
         { ip: '172.17.0.1', desc: 'Docker default gateway (IPv4)' },
-        { ip: '::ffff:172.17.0.1', desc: 'Docker default gateway (IPv6)' }
+        { ip: '::ffff:172.17.0.1', desc: 'Docker default gateway (IPv6)' },
+        { ip: '212.93.115.154', desc: 'Whitelisted IP' },
+        { ip: '45.149.161.28', desc: 'Whitelisted IP' },
+        { ip: '92.63.86.199', desc: 'Whitelisted IP' }
     ]
 
     const insertDefaultIp = db.prepare('INSERT OR IGNORE INTO ip_whitelist (ip_address, description) VALUES (?, ?)')
