@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Home, Key, Shield, Code, X } from 'lucide-vue-next'
+    import { Home, Key, Shield, Code } from 'lucide-vue-next'
 
     const showApiKeys = ref(false)
     const showIpWhitelist = ref(false)
@@ -51,8 +51,8 @@
 
                     <div class="space-y-1">
                         <button
-                            @click="showApiKeys = !showApiKeys"
                             class="w-full flex items-center justify-between rounded-xl px-3 py-2 hover:bg-panel border border-transparent hover:border-stroke"
+                            @click="showApiKeys = !showApiKeys"
                         >
                             <span class="flex items-center gap-3">
                                 <Key :size="18" />
@@ -63,8 +63,8 @@
                             </span>
                         </button>
                         <button
-                            @click="showIpWhitelist = !showIpWhitelist"
                             class="w-full flex items-center justify-between rounded-xl px-3 py-2 hover:bg-panel border border-transparent hover:border-stroke"
+                            @click="showIpWhitelist = !showIpWhitelist"
                         >
                             <span class="flex items-center gap-3">
                                 <Shield :size="18" />
@@ -75,8 +75,8 @@
                             </span>
                         </button>
                         <button
-                            @click="showCodeSnippets = !showCodeSnippets"
                             class="w-full flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-panel border border-transparent hover:border-stroke"
+                            @click="showCodeSnippets = !showCodeSnippets"
                         >
                             <Code :size="18" />
                             <span>Code Snippets</span>

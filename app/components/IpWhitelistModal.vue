@@ -36,9 +36,9 @@
                         >
                         <AppButton
                             variant="primary"
-                            @click="addIp"
                             :disabled="!newIp || adding"
                             class="w-full"
+                            @click="addIp"
                         >
                             Add IP Address
                         </AppButton>
@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-    import type { IpWhitelist } from '~/server/database/schema'
+    import type { IpWhitelist } from '../../types'
 
     const emit = defineEmits(['close', 'update'])
 

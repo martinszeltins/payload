@@ -19,27 +19,27 @@
                             Refresh
                         </AppButton>
                         <AppButton
-                            @click="copySnippet('curl')"
                             :active="copiedSnippet === 'curl'"
                             title="Copy cURL snippet"
+                            @click="copySnippet('curl')"
                         >
                             <Check v-if="copiedSnippet === 'curl'" :size="14" />
                             <Copy v-else :size="14" />
                             {{ copiedSnippet === 'curl' ? 'Copied!' : 'cURL' }}
                         </AppButton>
                         <AppButton
-                            @click="copySnippet('javascript')"
                             :active="copiedSnippet === 'javascript'"
                             title="Copy JavaScript snippet"
+                            @click="copySnippet('javascript')"
                         >
                             <Check v-if="copiedSnippet === 'javascript'" :size="14" />
                             <Copy v-else :size="14" />
                             {{ copiedSnippet === 'javascript' ? 'Copied!' : 'JS' }}
                         </AppButton>
                         <AppButton
-                            @click="copySnippet('php')"
                             :active="copiedSnippet === 'php'"
                             title="Copy PHP snippet"
+                            @click="copySnippet('php')"
                         >
                             <Check v-if="copiedSnippet === 'php'" :size="14" />
                             <Copy v-else :size="14" />
@@ -106,8 +106,8 @@
                         <div class="w-full lg:w-auto">
                             <label class="block text-xs uppercase tracking-wider text-gray-400 mb-2 invisible">Action</label>
                             <AppButton
-                                @click="showCreateForm = !showCreateForm"
                                 class="w-full lg:w-auto h-[42px] px-4"
+                                @click="showCreateForm = !showCreateForm"
                             >
                                 Add Log
                             </AppButton>
@@ -116,7 +116,7 @@
 
                     <!-- Create Log Form (Collapsible) -->
                     <div v-if="showCreateForm" class="pt-4 border-t border-stroke">
-                        <form @submit.prevent="createLog" class="flex flex-col lg:flex-row gap-3">
+                        <form class="flex flex-col lg:flex-row gap-3" @submit.prevent="createLog">
                             <div class="flex-1">
                                 <input
                                     v-model="newLog.message"
@@ -178,8 +178,8 @@
                 <!-- Pagination -->
                 <div v-if="totalPages > 1" class="p-4 lg:p-6 border-t border-stroke flex items-center justify-between">
                     <AppButton
-                        @click="previousPage"
                         :disabled="currentPage === 1"
+                        @click="previousPage"
                     >
                         Previous
                     </AppButton>
@@ -187,8 +187,8 @@
                         Page {{ currentPage }} of {{ totalPages }}
                     </span>
                     <AppButton
-                        @click="nextPage"
                         :disabled="currentPage === totalPages"
+                        @click="nextPage"
                     >
                         Next
                     </AppButton>
@@ -199,8 +199,8 @@
 </template>
 
 <script setup lang="ts">
-    import { RefreshCw, Check, Copy, Plus, X } from 'lucide-vue-next'
-    import type { Log } from '~/server/database/schema'
+    import { Check, Copy } from 'lucide-vue-next'
+    import type { Log } from '../../types'
 
     const currentPage = ref(1)
     const pageSize = 50
@@ -308,16 +308,16 @@
         }
         else if (type === 'php') {
             snippet = `<?php
-$ch = curl_init('${baseUrl}/api/log');
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-    'message' => 'Test message from PHP',
-    'level' => 'INFO'
-]));
-$response = curl_exec($ch);
-curl_close($ch);`
+file_get_contents('${baseUrl}/api/log', false, stream_context_create([
+    'http' => [
+        'method' => 'POST',
+        'header' => "Content-Type: application/json\\r\\n",
+        'content' => json_encode([
+            'message' => 'Test message from PHP',
+            'level' => 'INFO'
+        ])
+    ]
+]));`
         }
 
         navigator.clipboard.writeText(snippet).then(() => {
@@ -341,8 +341,8 @@ curl_close($ch);`
         const levelToSend = newLog.level
 
         // Create optimistic log entry
-        const optimisticLog = {
-            id: `temp-${Date.now()}`,
+        const optimisticLog: Log = {
+            id: -Date.now(), // Use negative number as temp ID
             message: messageToSend,
             level: levelToSend as 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL',
             metadata: undefined,
@@ -429,9 +429,9 @@ curl_close($ch);`
                         if (logsData.value) {
                             const currentLogs = [...logsData.value.logs]
                             
-                            // Remove any optimistic entries (temp IDs) for the same message
+                            // Remove any optimistic entries (negative IDs) for the same message
                             const filteredLogs = currentLogs.filter(log => {
-                                if (typeof log.id === 'string' && log.id.startsWith('temp-')) {
+                                if (log.id !== undefined && log.id < 0) {
                                     // Remove if message matches
                                     return log.message !== data.data.message || log.level !== data.data.level
                                 }

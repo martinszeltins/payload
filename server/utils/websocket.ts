@@ -1,3 +1,4 @@
+// @ts-ignore - crossws types not available
 import type { Peer } from 'crossws'
 
 const peers = new Set<Peer>()

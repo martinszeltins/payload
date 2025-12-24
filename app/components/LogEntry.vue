@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { MapPin, Copy, Check, ChevronRight } from 'lucide-vue-next'
-    import type { Log } from '~/server/database/schema'
+    import type { Log } from '../../types'
 
     const props = defineProps<{
         log: Log
@@ -80,7 +80,7 @@
     })
 
     function syntaxHighlight(json: string) {
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g, (match) => {
             let cls = 'text-gray-400'
             if (/^"/.test(match)) {
                 if (/:$/.test(match)) {
@@ -144,7 +144,7 @@
                 <!-- Message -->
                 <div class="text-gray-200">
                     <div v-if="isJson" class="relative">
-                        <pre class="bg-base/50 border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code v-html="highlightedJson"></code></pre>
+                        <pre class="bg-base/50 border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code v-html="highlightedJson"/></pre>
                     </div>
                     <div v-else class="whitespace-pre-wrap break-words">
                         {{ log.message }}
@@ -160,7 +160,7 @@
                         </summary>
                         <div class="mt-2">
                             <div v-if="isMetadataJson" class="relative">
-                                <pre class="bg-base/50 border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code v-html="highlightedMetadata"></code></pre>
+                                <pre class="bg-base/50 border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code v-html="highlightedMetadata"/></pre>
                             </div>
                             <div v-else class="whitespace-pre-wrap break-words text-sm text-gray-300">
                                 {{ log.metadata }}
@@ -173,8 +173,8 @@
             <!-- Copy Button -->
             <AppButton
                 variant="icon"
-                @click="copyLog"
                 title="Copy log entry"
+                @click="copyLog"
             >
                 <Check v-if="copied" :size="16" class="text-brand-teal" />
                 <Copy v-else :size="16" />

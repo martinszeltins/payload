@@ -8,15 +8,15 @@
                     <p class="text-sm text-gray-400">Post a log entry directly from the UI</p>
                 </div>
                 <button
-                    @click="$emit('close')"
                     class="p-2 rounded-lg hover:bg-base border border-transparent hover:border-stroke"
+                    @click="$emit('close')"
                 >
                     ✕
                 </button>
             </div>
 
             <!-- Content -->
-            <form @submit.prevent="createLog" class="p-6 space-y-4">
+            <form class="p-6 space-y-4" @submit.prevent="createLog">
                 <!-- Log Level -->
                 <div>
                     <label class="block text-sm font-medium mb-2">Log Level</label>
@@ -99,8 +99,8 @@
                 <div class="flex gap-3 pt-2">
                     <button
                         type="button"
-                        @click="$emit('close')"
                         class="flex-1 px-4 py-2 rounded-lg bg-base border border-stroke hover:bg-panel2 text-gray-200"
+                        @click="$emit('close')"
                     >
                         Cancel
                     </button>

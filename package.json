@@ -8,8 +8,10 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "typecheck": "nuxi typecheck",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "check-errors": "pnpm run typecheck && pnpm run lint"
   },
   "dependencies": {
     "@nuxt/fonts": "0.12.1",
@@ -23,8 +25,12 @@
     "vue-router": "4.6.3"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^0.7.4",
+    "@nuxt/eslint": "^0.7.6",
+    "@types/better-sqlite3": "7.6.13",
+    "@types/node": "25.0.3",
+    "@typescript-eslint/parser": "8.50.1",
     "eslint": "^9.18.0",
-    "lucide-vue-next": "0.562.0"
+    "lucide-vue-next": "0.562.0",
+    "vue-eslint-parser": "10.2.0"
   }
 }

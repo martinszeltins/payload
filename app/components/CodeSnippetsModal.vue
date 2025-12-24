@@ -22,11 +22,11 @@
                     <button
                         v-for="lang in languages"
                         :key="lang"
-                        @click="selectedLanguage = lang"
                         class="px-4 py-2 text-sm font-medium transition-colors"
                         :class="selectedLanguage === lang
                             ? 'text-gray-200 border-b-2 border-gray-400'
                             : 'text-gray-400 hover:text-gray-300'"
+                        @click="selectedLanguage = lang"
                     >
                         {{ lang.toUpperCase() }}
                     </button>
@@ -38,8 +38,8 @@
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">Basic Example</h3>
                             <AppButton
-                                @click="copySnippet(curlBasic)"
                                 class="text-xs"
+                                @click="copySnippet(curlBasic)"
                             >
                                 Copy
                             </AppButton>
@@ -51,8 +51,8 @@
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">With API Key</h3>
                             <AppButton
-                                @click="copySnippet(curlWithKey)"
                                 class="text-xs"
+                                @click="copySnippet(curlWithKey)"
                             >
                                 Copy
                             </AppButton>
@@ -64,8 +64,8 @@
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">With Log Level and Metadata</h3>
                             <AppButton
-                                @click="copySnippet(curlAdvanced)"
                                 class="text-xs"
+                                @click="copySnippet(curlAdvanced)"
                             >
                                 Copy
                             </AppButton>
@@ -80,8 +80,8 @@
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">Fetch API</h3>
                             <AppButton
-                                @click="copySnippet(jsFetch)"
                                 class="text-xs"
+                                @click="copySnippet(jsFetch)"
                             >
                                 Copy
                             </AppButton>
@@ -93,8 +93,8 @@
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">Axios</h3>
                             <AppButton
-                                @click="copySnippet(jsAxios)"
                                 class="text-xs"
+                                @click="copySnippet(jsAxios)"
                             >
                                 Copy
                             </AppButton>
@@ -109,8 +109,8 @@
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">cURL</h3>
                             <AppButton
-                                @click="copySnippet(phpCurl)"
                                 class="text-xs"
+                                @click="copySnippet(phpCurl)"
                             >
                                 Copy
                             </AppButton>
@@ -122,8 +122,8 @@
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">file_get_contents</h3>
                             <AppButton
-                                @click="copySnippet(phpFileGetContents)"
                                 class="text-xs"
+                                @click="copySnippet(phpFileGetContents)"
                             >
                                 Copy
                             </AppButton>
@@ -138,8 +138,8 @@
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-semibold">Requests Library</h3>
                             <AppButton
-                                @click="copySnippet(pythonRequests)"
                                 class="text-xs"
+                                @click="copySnippet(pythonRequests)"
                             >
                                 Copy
                             </AppButton>
@@ -153,7 +153,7 @@
 </template>
 
 <script setup lang="ts">
-    const emit = defineEmits(['close'])
+    defineEmits(['close'])
 
     const selectedLanguage = ref('curl')
     const languages = ['curl', 'javascript', 'php', 'python']
@@ -232,25 +232,17 @@ echo $response;
 ?>`
 
     const phpFileGetContents = `<?php
-$data = [
-    'message' => 'Test log message',
-    'level' => 'WARN',
-    'metadata' => json_encode(['warning_type' => 'deprecated'])
-];
-
-$options = [
+file_get_contents('${apiUrl}/api/log', false, stream_context_create([
     'http' => [
-        'header' => "Content-Type: application/json\\r\\n" .
-                    "X-API-Key: YOUR_API_KEY\\r\\n",
         'method' => 'POST',
-        'content' => json_encode($data)
+        'header' => "Content-Type: application/json\\r\\nX-API-Key: YOUR_API_KEY\\r\\n",
+        'content' => json_encode([
+            'message' => 'Test log message',
+            'level' => 'WARN',
+            'metadata' => json_encode(['warning_type' => 'deprecated'])
+        ])
     ]
-];
-
-$context = stream_context_create($options);
-$result = file_get_contents('${apiUrl}/api/log', false, $context);
-
-echo $result;
+]));
 ?>`
 
     // Python example

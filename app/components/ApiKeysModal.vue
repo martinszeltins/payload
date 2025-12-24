@@ -30,8 +30,8 @@
                         >
                         <AppButton
                             variant="primary"
-                            @click="createApiKey"
                             :disabled="!newKeyName || creating"
+                            @click="createApiKey"
                         >
                             Create
                         </AppButton>
@@ -40,8 +40,8 @@
                         <span class="text-xs text-gray-400 block mb-1">New API Key (save it now, it won't be shown again):</span>
                         <span class="font-mono text-sm text-brand-yellow break-all">{{ newlyCreatedKey }}</span>
                         <button
-                            @click="copyKey(newlyCreatedKey)"
                             class="ml-2 text-xs text-brand-yellow hover:underline"
+                            @click="copyKey(newlyCreatedKey)"
                         >
                             Copy
                         </button>
@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-    import type { ApiKey } from '~/server/database/schema'
+    import type { ApiKey } from '../../types'
 
     const emit = defineEmits(['close', 'update'])
 
