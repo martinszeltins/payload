@@ -158,6 +158,12 @@
                         <p class="text-xs tracking-wider uppercase text-gray-400">Logs</p>
                         <h2 class="text-lg font-semibold">{{ totalLogs }} Total Entries</h2>
                     </div>
+                    <AppButton
+                        :disabled="totalLogs === 0 || clearing"
+                        @click="clearAllLogs"
+                    >
+                        {{ clearing ? 'Clearing...' : 'Clear Logs' }}
+                    </AppButton>
                 </div>
 
                 <!-- Logs List -->
@@ -208,6 +214,7 @@
 
     const showCreateForm = ref(false)
     const copiedSnippet = ref<string | null>(null)
+    const clearing = ref(false)
     const newLog = reactive({
         message: '',
         level: 'INFO'
@@ -398,6 +405,25 @@ file_get_contents('${baseUrl}/api/log', false, stream_context_create([
             
             createError.value = err.data?.message || 'Failed to create log'
             showCreateForm.value = true
+        }
+    }
+
+    async function clearAllLogs() {
+        clearing.value = true
+        try {
+            await $fetch('/api/logs', {
+                method: 'DELETE'
+            })
+            
+            // Clear the logs and refresh
+            await fetchLogs()
+        }
+        catch (err: any) {
+            console.error('Failed to clear logs:', err)
+            alert('Failed to clear logs. Please try again.')
+        }
+        finally {
+            clearing.value = false
         }
     }
 
