@@ -1,3 +1,5 @@
+version: '3.7'
+
 services:
     payload-app:
         container_name: payload-app
