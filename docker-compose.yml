@@ -1,0 +1,24 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: monocle-logs
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./data:/app/data
+        environment:
+            - NODE_ENV=production
+            - DATABASE_PATH=/app/data/logs.db
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
+
+volumes:
+    data:
+        driver: local

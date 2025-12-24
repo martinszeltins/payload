@@ -1,1 +1,67 @@
 @import "tailwindcss";
+
+@theme {
+    --font-family-sans: 'Inter', ui-sans-serif, system-ui;
+    
+    --color-base: #0B0F14;
+    --color-panel: #0F141B;
+    --color-panel2: #101720;
+    --color-stroke: rgba(255, 255, 255, 0.08);
+    --color-soft: rgba(255, 255, 255, 0.06);
+    --color-hi: #F0F4F8;
+    
+    --color-brand-yellow: #F6C569;
+    --color-brand-pink: #FF5C83;
+    --color-brand-purple: #9B8CFF;
+    --color-brand-teal: #5EEAD4;
+    
+    --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    --radius-xl2: 1.25rem;
+}
+
+body {
+    font-family: var(--font-family-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+/* Code syntax highlighting */
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 0.5rem;
+}
+
+.hljs-string,
+.hljs-attr {
+    color: #98c379;
+}
+
+.hljs-number {
+    color: #d19a66;
+}
+
+.hljs-literal {
+    color: #56b6c2;
+}
+
+.hljs-punctuation {
+    color: #abb2bf;
+}

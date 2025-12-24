@@ -1,0 +1,183 @@
+<template>
+    <div class="p-4 lg:p-6 hover:bg-white/5 transition-colors border-b border-stroke last:border-b-0">
+        <div class="flex items-start gap-4">
+            <!-- Log Level Badge -->
+            <div
+                class="mt-0.5 px-2 py-1 rounded text-xs font-semibold uppercase whitespace-nowrap"
+                :class="levelClass"
+            >
+                {{ log.level }}
+            </div>
+
+            <!-- Log Content -->
+            <div class="flex-1 min-w-0 space-y-2">
+                <!-- Timestamp and IP -->
+                <div class="flex items-center gap-3 text-xs text-gray-400">
+                    <span>{{ formattedTime }}</span>
+                    <span v-if="log.ip_address" class="flex items-center gap-1">
+                        <span>📍</span>
+                        <span>{{ log.ip_address }}</span>
+                    </span>
+                </div>
+
+                <!-- Message -->
+                <div class="text-gray-200">
+                    <div v-if="isJson" class="relative">
+                        <pre class="bg-base/50 border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code v-html="highlightedJson"></code></pre>
+                    </div>
+                    <div v-else class="whitespace-pre-wrap break-words">
+                        {{ log.message }}
+                    </div>
+                </div>
+
+                <!-- Metadata -->
+                <div v-if="log.metadata" class="mt-2">
+                    <details class="group">
+                        <summary class="cursor-pointer text-xs text-gray-400 hover:text-gray-300 select-none">
+                            <span class="inline-block group-open:rotate-90 transition-transform">▶</span>
+                            Metadata
+                        </summary>
+                        <div class="mt-2">
+                            <div v-if="isMetadataJson" class="relative">
+                                <pre class="bg-base/50 border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code v-html="highlightedMetadata"></code></pre>
+                            </div>
+                            <div v-else class="whitespace-pre-wrap break-words text-sm text-gray-300">
+                                {{ log.metadata }}
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- Copy Button -->
+            <button
+                @click="copyLog"
+                class="mt-0.5 p-2 rounded-lg hover:bg-panel border border-transparent hover:border-stroke transition-colors"
+                title="Copy log entry"
+            >
+                <span v-if="copied" class="text-brand-teal">✓</span>
+                <span v-else>📋</span>
+            </button>
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+    import type { Log } from '~/server/database/schema'
+
+    const props = defineProps<{
+        log: Log
+    }>()
+
+    const copied = ref(false)
+
+    const levelClass = computed(() => {
+        switch (props.log.level) {
+            case 'DEBUG':
+                return 'bg-gray-500/20 text-gray-300 border border-gray-500/30'
+            case 'INFO':
+                return 'bg-brand-teal/20 text-brand-teal border border-brand-teal/30'
+            case 'WARN':
+                return 'bg-brand-yellow/20 text-brand-yellow border border-brand-yellow/30'
+            case 'ERROR':
+                return 'bg-brand-pink/20 text-brand-pink border border-brand-pink/30'
+            case 'FATAL':
+                return 'bg-red-600/20 text-red-400 border border-red-600/30'
+            default:
+                return 'bg-white/5 text-gray-400 border border-stroke'
+        }
+    })
+
+    const formattedTime = computed(() => {
+        const date = new Date(props.log.timestamp)
+        return date.toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        })
+    })
+
+    const isJson = computed(() => {
+        try {
+            JSON.parse(props.log.message)
+            return true
+        }
+        catch {
+            return false
+        }
+    })
+
+    const isMetadataJson = computed(() => {
+        if (!props.log.metadata) return false
+        try {
+            JSON.parse(props.log.metadata)
+            return true
+        }
+        catch {
+            return false
+        }
+    })
+
+    const highlightedJson = computed(() => {
+        if (!isJson.value) return ''
+        try {
+            const parsed = JSON.parse(props.log.message)
+            return syntaxHighlight(JSON.stringify(parsed, null, 2))
+        }
+        catch {
+            return props.log.message
+        }
+    })
+
+    const highlightedMetadata = computed(() => {
+        if (!isMetadataJson.value || !props.log.metadata) return ''
+        try {
+            const parsed = JSON.parse(props.log.metadata)
+            return syntaxHighlight(JSON.stringify(parsed, null, 2))
+        }
+        catch {
+            return props.log.metadata
+        }
+    })
+
+    function syntaxHighlight(json: string) {
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
+            let cls = 'text-gray-400'
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'text-brand-purple'
+                }
+                else {
+                    cls = 'text-green-400'
+                }
+            }
+            else if (/true|false/.test(match)) {
+                cls = 'text-brand-teal'
+            }
+            else if (/null/.test(match)) {
+                cls = 'text-gray-500'
+            }
+            else {
+                cls = 'text-brand-yellow'
+            }
+            return `<span class="${cls}">${match}</span>`
+        })
+    }
+
+    async function copyLog() {
+        const logText = `[${props.log.level}] ${formattedTime.value}\n${props.log.message}${props.log.metadata ? `\n\nMetadata:\n${props.log.metadata}` : ''}`
+        
+        try {
+            await navigator.clipboard.writeText(logText)
+            copied.value = true
+            setTimeout(() => {
+                copied.value = false
+            }, 2000)
+        }
+        catch (error) {
+            console.error('Failed to copy:', error)
+        }
+    }
+</script>
