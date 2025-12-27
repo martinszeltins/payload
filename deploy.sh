@@ -5,6 +5,7 @@ set -e
 echo "🚀 Starting deployment..."
 
 git reset --hard
+git pull
 
 # Configuration
 IMAGE_NAME="payload-logs"
