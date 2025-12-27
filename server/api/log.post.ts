@@ -1,4 +1,4 @@
-import { insertLog, isIpWhitelisted, verifyApiKey, getIpWhitelist } from '../database/db'
+import { insertLog, isIpWhitelisted, verifyApiKey } from '../database/db'
 import { checkRateLimit } from '../utils/rateLimit'
 import { getClientIp, sanitizeInput } from '../utils/helpers'
 import { broadcastNewLog } from '../utils/websocket'
@@ -35,10 +35,9 @@ export default defineEventHandler(async (event) => {
     const hasValidApiKey = apiKey && verifyApiKey(apiKey)
 
     if (!isWhitelisted && !hasValidApiKey) {
-        const whitelistedIps = getIpWhitelist().map(entry => entry.ip_address)
         throw createError({
             statusCode: 401,
-            message: `Unauthorized. Please provide a valid API key or ensure your IP is whitelisted.\n\nYour IP: ${clientIp}\n\nWhitelisted IPs: ${whitelistedIps.join(', ')}`
+            message: `Unauthorized.`
         })
     }
 
