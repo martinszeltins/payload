@@ -1,6 +1,12 @@
 export function getClientIp(event: any): string {
     const headers = event.node.req.headers
     
+    // Check Cloudflare header first (most reliable when using Cloudflare)
+    const cfConnectingIp = headers['cf-connecting-ip']
+    if (cfConnectingIp) {
+        return typeof cfConnectingIp === 'string' ? cfConnectingIp : cfConnectingIp[0]
+    }
+    
     // Check common headers for real IP
     const forwarded = headers['x-forwarded-for']
     if (forwarded) {
