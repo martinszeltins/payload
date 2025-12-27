@@ -464,21 +464,34 @@ file_get_contents('${baseUrl}/api/log', false, stream_context_create([
                         if (logsData.value) {
                             const currentLogs = [...logsData.value.logs]
                             
+                            // Remove optimistic entries (negative IDs) that match incoming real logs
+                            const filteredLogs = currentLogs.filter(log => {
+                                if (log.id !== undefined && log.id < 0) {
+                                    // Check if any of the new logs match this optimistic entry
+                                    const matchesRealLog = result.logs.some((newLog: Log) => 
+                                        newLog.message === log.message && newLog.level === log.level
+                                    )
+                                    // Keep optimistic entry only if it doesn't match a real log
+                                    return !matchesRealLog
+                                }
+                                return true
+                            })
+                            
                             // Add new logs at the beginning
                             result.logs.reverse().forEach((newLog: Log) => {
-                                // Check if log already exists
-                                if (!currentLogs.some(log => log.id === newLog.id)) {
-                                    currentLogs.unshift(newLog)
+                                // Check if log already exists (by ID)
+                                if (!filteredLogs.some(log => log.id === newLog.id)) {
+                                    filteredLogs.unshift(newLog)
                                 }
                             })
                             
                             // Keep only pageSize logs
-                            while (currentLogs.length > pageSize) {
-                                currentLogs.pop()
+                            while (filteredLogs.length > pageSize) {
+                                filteredLogs.pop()
                             }
                             
                             logsData.value = {
-                                logs: currentLogs,
+                                logs: filteredLogs,
                                 total: logsData.value.total + result.logs.length
                             }
                         }
