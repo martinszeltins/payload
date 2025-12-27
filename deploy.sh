@@ -38,6 +38,7 @@ mkdir -p $DATA_PATH
 # Run new container
 echo ""
 echo "🎯 Starting new container..."
+docker stop payload-app
 docker run -d \
   --name $CONTAINER_NAME \
   -p $PORT \
