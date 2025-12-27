@@ -210,6 +210,10 @@
     const currentPage = ref(1)
     const pageSize = 50
     let ws: WebSocket | null = null
+    let pollingInterval: ReturnType<typeof setInterval> | null = null
+    const wsConnected = ref(false)
+    const usingPolling = ref(false)
+    let lastPollTimestamp = Date.now()
 
     const showCreateForm = ref(false)
     const copiedSnippet = ref<string | null>(null)
@@ -435,14 +439,95 @@ file_get_contents('${baseUrl}/api/log', false, stream_context_create([
         }
         window.addEventListener('keydown', handleEscape)
         
+        // Function to start polling as fallback
+        const startPolling = () => {
+            if (pollingInterval) return // Already polling
+            
+            console.log('[polling] Starting fallback polling')
+            usingPolling.value = true
+            
+            pollingInterval = setInterval(async () => {
+                try {
+                    // Fetch only new logs since last poll
+                    const result = await $fetch('/api/logs', {
+                        params: {
+                            limit: 50,
+                            startDate: lastPollTimestamp
+                        }
+                    })
+                    
+                    // Update last poll timestamp
+                    lastPollTimestamp = Date.now()
+                    
+                    // Add new logs to the list if we're on first page and no filters
+                    if (result.logs.length > 0 && currentPage.value === 1 && !filters.level && !filters.search && filters.timeRange === '24h') {
+                        if (logsData.value) {
+                            const currentLogs = [...logsData.value.logs]
+                            
+                            // Add new logs at the beginning
+                            result.logs.reverse().forEach((newLog: Log) => {
+                                // Check if log already exists
+                                if (!currentLogs.some(log => log.id === newLog.id)) {
+                                    currentLogs.unshift(newLog)
+                                }
+                            })
+                            
+                            // Keep only pageSize logs
+                            while (currentLogs.length > pageSize) {
+                                currentLogs.pop()
+                            }
+                            
+                            logsData.value = {
+                                logs: currentLogs,
+                                total: logsData.value.total + result.logs.length
+                            }
+                        }
+                    }
+                }
+                catch (error) {
+                    console.error('[polling] Error:', error)
+                }
+            }, 1000)
+        }
+        
+        // Function to stop polling
+        const stopPolling = () => {
+            if (pollingInterval) {
+                console.log('[polling] Stopping fallback polling')
+                clearInterval(pollingInterval)
+                pollingInterval = null
+                usingPolling.value = false
+            }
+        }
+        
         // Connect to WebSocket (client-side only)
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
         const wsUrl = `${protocol}//${window.location.host}/_ws`
         
+        let wsConnectionTimeout: ReturnType<typeof setTimeout> | null = null
+        
         ws = new WebSocket(wsUrl)
+        
+        // Set a timeout to start polling if WebSocket doesn't connect in 3 seconds
+        wsConnectionTimeout = setTimeout(() => {
+            if (!wsConnected.value) {
+                console.log('[ws] Connection timeout, falling back to polling')
+                startPolling()
+            }
+        }, 3000)
         
         ws.onopen = () => {
             console.log('[ws] Connected')
+            wsConnected.value = true
+            
+            // Clear connection timeout
+            if (wsConnectionTimeout) {
+                clearTimeout(wsConnectionTimeout)
+                wsConnectionTimeout = null
+            }
+            
+            // Stop polling if it was started
+            stopPolling()
         }
         
         ws.onmessage = (event) => {
@@ -496,10 +581,17 @@ file_get_contents('${baseUrl}/api/log', false, stream_context_create([
         
         ws.onerror = (error) => {
             console.error('[ws] Error:', error)
+            // Start polling on error
+            if (!wsConnected.value) {
+                startPolling()
+            }
         }
         
         ws.onclose = () => {
             console.log('[ws] Disconnected')
+            wsConnected.value = false
+            // Start polling if connection closed unexpectedly
+            startPolling()
         }
         
         onUnmounted(() => {
@@ -507,6 +599,7 @@ file_get_contents('${baseUrl}/api/log', false, stream_context_create([
             if (ws) {
                 ws.close()
             }
+            stopPolling()
         })
     })
 </script>
