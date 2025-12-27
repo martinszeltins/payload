@@ -437,7 +437,8 @@ file_get_contents('${baseUrl}/api/log', false, stream_context_create([
         
         // Connect to WebSocket (client-side only)
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-        const wsUrl = `${protocol}//${window.location.host}/_ws`
+        const wsHost = window.location.hostname === 'log.martinsz.lv' ? 'ws-log.martinsz.lv' : window.location.host
+        const wsUrl = `${protocol}//${wsHost}/_ws`
         
         ws = new WebSocket(wsUrl)
         
