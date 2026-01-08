@@ -146,7 +146,7 @@
                     <div v-if="isJson" class="relative">
                         <pre class="bg-base/50 border border-stroke rounded-lg p-4 overflow-x-auto text-sm"><code v-html="highlightedJson"/></pre>
                     </div>
-                    <div v-else class="whitespace-pre-wrap break-words">
+                    <div v-else class="break-words font-mono overflow-x-auto whitespace-pre">
                         {{ log.message }}
                     </div>
                 </div>
